@@ -1,0 +1,20 @@
+{
+  "name": "hubot-status-reminder",
+  "description": "Remind users to give a daily status update",
+  "version": "0.1.0",
+  "author": "nick warner <nickwarner@gmail.com>",
+  "license": "MIT",
+
+  "keywords": ["hubot","status","update","standup","reminder"],
+
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nikolaiwarner/hubot-status-reminder.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/nikolaiwarner/hubot-status-reminder/issues"
+  },
+
+  "main": "index.coffee"
+}
