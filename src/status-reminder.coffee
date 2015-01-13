@@ -47,7 +47,8 @@ module.exports = (robot) ->
 
   robot.respond /status reminder list users/i, (msg) ->
     for user in robot.brain.data.status_reminder.users
-      msg.send "#{user.username} - Streak: #{user.streak} - Last update: #{new Date(user.last_status_date)}"
+      date = new Date(user.last_status_date)
+      msg.send "#{user.username} - Streak: #{user.streak} - Last update: #{date.toLocaleDateString()}"
 
   robot.respond /status reminder send reminders/i, ->
     send_reminders()
