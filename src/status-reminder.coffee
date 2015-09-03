@@ -64,7 +64,7 @@ module.exports = (robot) ->
   robot.respond /status reminder send reminders/i, ->
     send_reminders()
 
-  robot.on /status reminder send reminders/i, ->
+  robot.on 'status-reminder:send-reminders', ->
     send_reminders()
 
   robot.hear /^t:|^today|^y:|^yesterday/i, (msg) ->
