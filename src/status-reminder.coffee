@@ -31,7 +31,7 @@ module.exports = (robot) ->
         robot.send {user: {name: user.username, id: user.user.id}}, message
 
   robot.respond /status reminder add user\s+(.*)?$/i, (msg) ->
-    username = msg.match[1]
+    username = msg.match[1].trim()
     username = username.replace(/^@/, '') # remove @ symbol from front if it exists
     if username in robot.brain.data.status_reminder.users.map((user) -> user.username)
       msg.send "Reminders are already being sent for @#{username}"
@@ -49,7 +49,7 @@ module.exports = (robot) ->
     msg.send "Added user: @#{username}"
 
   robot.respond /status reminder remove user\s+(.*)?$/i, (msg) ->
-    username = msg.match[1]
+    username = msg.match[1].trim()
     username = username.replace(/^@/, '') # remove @ symbol from front if it exists
     users = robot.brain.data.status_reminder.users
     robot.brain.data.status_reminder.users = users.filter (user) ->
