@@ -60,7 +60,7 @@ module.exports = (robot) ->
   robot.on /status reminder send reminders/i, ->
     send_reminders()
 
-  robot.hear /^t:|^today:|^y:|^yesterday:/i, (msg) ->
+  robot.hear /^t:|^today|^y:|^yesterday/i, (msg) ->
     username = msg.message.user.name
     users = robot.brain.data.status_reminder.users
     index = users.map((user) -> user.username).indexOf(username)
