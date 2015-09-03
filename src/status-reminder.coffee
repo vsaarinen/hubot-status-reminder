@@ -28,7 +28,7 @@ module.exports = (robot) ->
     for user in robot.brain.data.status_reminder.users
       if user.last_status_date < (new Date().getTime()) - seconds_since_midnight()
         message = "Hey #{user.username}! Please update your daily status. Thanks!"
-        robot.send {user: {name: user.username}}, message
+        robot.send {user: {name: user.username, id: user.user.id}}, message
 
   robot.respond /status reminder add user\s+(.*)?$/i, (msg) ->
     username = msg.match[1]
@@ -36,10 +36,15 @@ module.exports = (robot) ->
     if username in robot.brain.data.status_reminder.users.map((user) -> user.username)
       msg.send "Reminders are already being sent for @#{username}"
       return
+    hubotUser = robot.brain.userForName(username)
+    unless hubotUser
+      msg.send "No such user @#{username}"
+      return
     user =
       streak: 0
       last_status_date: 0
       username: username
+      user: hubotUser
     robot.brain.data.status_reminder.users.push user
     msg.send "Added user: @#{username}"
 
