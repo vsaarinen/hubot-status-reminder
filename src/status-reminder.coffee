@@ -60,5 +60,6 @@ module.exports = (robot) ->
     username = msg.message.user.name
     users = robot.brain.data.status_reminder.users
     index = users.map((user) -> user.username).indexOf(username)
-    robot.brain.data.status_reminder.users[index].last_status_date = (new Date().getTime())
+    if index > -1
+      robot.brain.data.status_reminder.users[index].last_status_date = (new Date().getTime())
     #TODO record streak data
