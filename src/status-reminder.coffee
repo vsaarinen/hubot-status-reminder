@@ -2,10 +2,10 @@
 #   Remind users to give a daily status update
 #
 # Commands:
-#   status reminder add user <username> - Add a user
-#   status reminder remove user <username> - Remove a user
-#   status reminder list users - List all users getting reminders and show stats
-#   status reminder send reminders - Send reminders
+#   hubot status reminder add user <username> - Add a user
+#   hubot status reminder remove user <username> - Remove a user
+#   hubot status reminder list users - List all users getting reminders and show stats
+#   hubot status reminder send reminders - Send reminders
 #
 # Notes:
 #   You can use package hubot-cron-json to execute the send reminders task
