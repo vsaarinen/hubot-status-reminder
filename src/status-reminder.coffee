@@ -32,27 +32,29 @@ module.exports = (robot) ->
 
   robot.respond /status reminder add user\s+(.*)?$/i, (msg) ->
     username = msg.match[1]
+    username = username.replace(/^@/, '') # remove @ symbol from front if it exists
     if username in robot.brain.data.status_reminder.users.map((user) -> user.username)
-      msg.send "Reminders are already being sent for #{username}"
+      msg.send "Reminders are already being sent for @#{username}"
       return
     user =
       streak: 0
       last_status_date: 0
       username: username
     robot.brain.data.status_reminder.users.push user
-    msg.send "Added user: #{username}"
+    msg.send "Added user: @#{username}"
 
   robot.respond /status reminder remove user\s+(.*)?$/i, (msg) ->
     username = msg.match[1]
+    username = username.replace(/^@/, '') # remove @ symbol from front if it exists
     users = robot.brain.data.status_reminder.users
     robot.brain.data.status_reminder.users = users.filter (user) ->
       user.username != username
-    msg.send "Removed user: #{username}"
+    msg.send "Removed user: @#{username}"
 
   robot.respond /status reminder list users/i, (msg) ->
     for user in robot.brain.data.status_reminder.users
       date = new Date(user.last_status_date)
-      msg.send "#{user.username} - Streak: #{user.streak} - Last update: #{date.toLocaleDateString()}"
+      msg.send "@#{user.username}: Last update at #{date.toLocaleDateString()}"
 
   robot.respond /status reminder send reminders/i, ->
     send_reminders()
