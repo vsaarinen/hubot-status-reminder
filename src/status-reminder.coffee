@@ -13,6 +13,7 @@
 #
 # Author:
 #   nick warner
+#   Ville Saarinen
 
 module.exports = (robot) ->
   robot.brain.data.status_reminder ||= {}
@@ -31,6 +32,9 @@ module.exports = (robot) ->
 
   robot.respond /status reminder add user\s+(.*)?$/i, (msg) ->
     username = msg.match[1]
+    if username in users.map((user) -> user.username)
+      msg.send "Reminders are already being sent for #{username}"
+      return
     user =
       streak: 0
       last_status_date: 0
