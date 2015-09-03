@@ -57,6 +57,7 @@ module.exports = (robot) ->
     msg.send "Removed user: @#{username}"
 
   robot.respond /status reminder list users/i, (msg) ->
+    msg.send "Listing users:"
     for user in robot.brain.data.status_reminder.users
       date = new Date(user.last_status_date)
       msg.send "@#{user.username}: Last update at #{date.toLocaleDateString()}"
