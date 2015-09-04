@@ -5,6 +5,8 @@
 #   hubot status reminder add user <username> - Add a user
 #   hubot status reminder remove user <username> - Remove a user
 #   hubot status reminder list users - List all users getting reminders and show stats
+#   hubot status reminder follow this room - Toggle whether this room should be followed or not
+#   hubot status reminder follow all rooms - Listen for status updates in all rooms
 #   hubot status reminder send reminders - Send reminders
 #
 # Notes:
@@ -18,6 +20,7 @@
 module.exports = (robot) ->
   robot.brain.data.status_reminder ||= {}
   robot.brain.data.status_reminder.users ||= []
+  robot.brain.data.status_reminder.rooms ||= []
 
   seconds_since_midnight = ->
     d = new Date()
@@ -62,6 +65,19 @@ module.exports = (robot) ->
       date = new Date(user.last_status_date)
       msg.send "@#{user.username}: Last update at #{date.toLocaleDateString()}"
 
+  robot.respond /status reminder follow this room/i, (msg) ->
+    if msg.message.room in robot.brain.data.status_reminder.rooms
+      robot.brain.data.status_reminder.rooms = robot.brain.data.status_reminder.rooms.filter (room) ->
+        room != msg.message.room
+      msg.send "No longer following this room for status updates"
+    else
+      robot.brain.data.status_reminder.rooms.push msg.message.room
+      msg.send "Listening for status updates in this room"
+
+  robot.respond /status reminder follow all rooms/i, (msg) ->
+    robot.brain.data.status_reminder.rooms = []
+    msg.send "Listening for status updates in all rooms"
+
   robot.respond /status reminder send reminders/i, ->
     send_reminders()
 
@@ -69,6 +85,9 @@ module.exports = (robot) ->
     send_reminders()
 
   robot.hear /^t:|^today|^y:|^yesterday/i, (msg) ->
+    rooms = robot.brain.data.status_reminder.rooms
+    if rooms.length > 0 && msg.message.room not in rooms
+      return
     username = msg.message.user.name
     users = robot.brain.data.status_reminder.users
     index = users.map((user) -> user.username).indexOf(username)
